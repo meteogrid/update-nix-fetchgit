@@ -30,7 +30,7 @@ nixPrefetchGit :: Text -- ^ The URL to prefetch
                -> IO (Either Warning NixPrefetchGitOutput)
 nixPrefetchGit prefetchURL = runExceptT $ do
   (exitCode, nsStdout, nsStderr) <- liftIO $
-    readProcessWithExitCode "nix-prefetch-git" [unpack prefetchURL] ""
+    readProcessWithExitCode "nix-prefetch-git" ["--fetch-submodules", unpack prefetchURL] ""
   hoistEither $ case exitCode of
     ExitFailure e -> Left (NixPrefetchGitFailed e (pack nsStderr))
     ExitSuccess -> pure ()
